@@ -1960,9 +1960,13 @@
 			                '<th colspan="7" class="datepicker-title"></th>'+
 			              '</tr>'+
 							'<tr>'+
-								'<th class="prev">'+defaults.templates.leftArrow+'</th>'+
-								'<th colspan="5" class="datepicker-switch"></th>'+
-								'<th class="next">'+defaults.templates.rightArrow+'</th>'+
+                '<th colspan="7">'+
+                  '<div class="datepicker-header-container">'+
+                    '<div class="prev">'+defaults.templates.leftArrow+'</div>'+
+                    '<div colspan="5" class="datepicker-switch"></div>'+
+                    '<div class="next">'+defaults.templates.rightArrow+'</div>'+
+                  '</div>'+
+                '</th>'+
 							'</tr>'+
 						'</thead>',
 		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
