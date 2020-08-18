@@ -1,7 +1,7 @@
 /*!
  * Datepicker for Bootstrap v1.9.0 (https://github.com/uxsolutions/bootstrap-datepicker)
  *
- * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ * Licensed under the Apache License v2.0 (https://www.apache.org/licenses/LICENSE-2.0)
  */
 
 .datepicker {
@@ -411,6 +411,13 @@
 .datepicker table tr td span.old,
 .datepicker table tr td span.new {
   color: #999;
+}
+.datepicker .datepicker-header-container {
+  text-align: center;
+}
+.datepicker .datepicker-header-container > div {
+  display: inline-block;
+  vertical-align: top;
 }
 .datepicker .datepicker-switch {
   width: 145px;
