@@ -845,18 +845,23 @@
           html += '">'+dates[this.o.language].daysMin[(dowCnt++)%7]+'</div>';
         }
         html += '</div></th></tr>';
-        this.picker.find('.datepicker-days thead').append(html);
+        $(html).insertBefore(this.picker.find('.datepicker-days thead .datepicker-header-divider'));
       }
     },
 
 		fillMonths: function(){
       var localDate = this._utc_to_local(this.viewDate);
-			var html = '';
+      var html = '<div class="table-cell-container">';
 			var focused;
 			for (var i = 0; i < 12; i++){
 				focused = localDate && localDate.getMonth() === i ? ' focused' : '';
-				html += '<span class="month' + focused + '">' + dates[this.o.language].monthsShort[i] + '</span>';
+        html += '<div class="month' + focused + '">' +
+         '<span class="date-wrapper">' +
+          dates[this.o.language].monthsShort[i] +
+         '</span>' +
+         '</div>';
 			}
+      html += '</div>';
 			this.picker.find('.datepicker-months td').html(html);
 		},
 
@@ -916,7 +921,7 @@
 		},
 
 		_fill_yearsView: function(selector, cssClass, factor, year, startYear, endYear, beforeFn){
-			var html = '';
+      var html = '<div class="table-cell-container">';
 			var step = factor / 10;
 			var view = this.picker.find(selector);
 			var startVal = Math.floor(year / factor) * factor;
@@ -966,9 +971,14 @@
 					}
 				}
 
-				html += '<span class="' + classes.join(' ') + '"' + (tooltip ? ' title="' + tooltip + '"' : '') + '>' + currVal + '</span>';
+        html += '<div class="' + classes.join(' ') + '"' + (tooltip ? ' title="' + tooltip + '"' : '') + '>' +
+          '<span class="date-wrapper">' +
+            currVal +
+          '</span>'+
+        '</div>';
 			}
 
+      html += '</div>';
 			view.find('.datepicker-switch').text(startVal + '-' + endVal);
 			view.find('td').html(html);
 		},
@@ -1064,7 +1074,7 @@
 					clsName = $.unique(clsName);
 				}
 
-				html.push('<td class="'+clsName.join(' ')+'"' + (tooltip ? ' title="'+tooltip+'"' : '') + ' data-date="' + prevMonth.getTime().toString() + '">' + content + '</td>');
+        html.push('<td class="'+clsName.join(' ')+'"' + (tooltip ? ' title="'+tooltip+'"' : '') + ' data-date="' + prevMonth.getTime().toString() + '">' + '<div class="date-wrapper">' + content + '</div>' + '</td>');
 				tooltip = null;
 				if (weekDay === this.o.weekEnd){
 					html.push('</tr>');
@@ -1212,15 +1222,15 @@
 
 			if (!target.hasClass('disabled')){
 				// Clicked on a month, year, decade, century
-				if (target.hasClass('month')
-						|| target.hasClass('year')
+        if (target.parent().hasClass('month')
+          || target.parent().hasClass('year')
 						|| target.hasClass('decade')
 						|| target.hasClass('century')) {
 					this.viewDate.setUTCDate(1);
 
 					day = 1;
 					if (this.viewMode === 1){
-						month = target.parent().find('span').index(target);
+            month = target.parent().parent().find('div').index(target.parent());
 						year = this.viewDate.getUTCFullYear();
 						this.viewDate.setUTCMonth(month);
 					} else {
@@ -1969,6 +1979,10 @@
                   '</div>'+
                 '</th>'+
 							'</tr>'+
+              '<tr class="datepicker-header-divider">'+
+                '<th colspan="7" class="divider">'+
+                '</th>'+
+              '</tr>'+
 						'</thead>',
 		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
 		footTemplate: '<tfoot>'+
