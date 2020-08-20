@@ -817,23 +817,24 @@
 			return this;
 		},
 
-		fillDow: function(){
+    fillDow: function(){
       if (this.o.showWeekDays) {
-			var dowCnt = this.o.weekStart,
-				html = '<tr>';
-			if (this.o.calendarWeeks){
-				html += '<th class="cw">&#160;</th>';
-			}
-			while (dowCnt < this.o.weekStart + 7){
-				html += '<th class="dow';
-        if ($.inArray(dowCnt, this.o.daysOfWeekDisabled) !== -1)
-          html += ' disabled';
-        html += '">'+dates[this.o.language].daysMin[(dowCnt++)%7]+'</th>';
-			}
-			html += '</tr>';
-			this.picker.find('.datepicker-days thead').append(html);
+        var dowCnt = this.o.weekStart,
+          html = '<tr>';
+        if (this.o.calendarWeeks){
+          html += '<th class="cw">&#160;</th>';
+        }
+        html += '<th colspan="7"><div class="datepicker-days-header-container">';
+        while (dowCnt < this.o.weekStart + 7){
+          html += '<div class="dow';
+          if ($.inArray(dowCnt, this.o.daysOfWeekDisabled) !== -1)
+            html += ' disabled';
+          html += '">'+dates[this.o.language].daysMin[(dowCnt++)%7]+'</div>';
+        }
+        html += '</div></th></tr>';
+        this.picker.find('.datepicker-days thead').append(html);
       }
-		},
+    },
 
 		fillMonths: function(){
       var localDate = this._utc_to_local(this.viewDate);

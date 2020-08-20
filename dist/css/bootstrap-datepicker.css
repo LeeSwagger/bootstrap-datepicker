@@ -444,6 +444,14 @@
   padding: 0 2px 0 5px;
   vertical-align: middle;
 }
+.datepicker .datepicker-days-header-container {
+  text-align: center;
+}
+.datepicker .datepicker-days-header-container > div {
+  display: inline-block;
+  vertical-align: top;
+  padding: 0 10px;
+}
 .input-append.date .add-on,
 .input-prepend.date .add-on {
   cursor: pointer;
