@@ -912,7 +912,7 @@
 			var step = factor / 10;
 			var view = this.picker.find(selector);
 			var startVal = Math.floor(year / factor) * factor;
-			var endVal = startVal + step * 9;
+			var endVal = startVal + step * 21;
 			var focusedVal = Math.floor(this.viewDate.getFullYear() / step) * step;
 			var selected = $.map(this.dates, function(d){
 				return Math.floor(d.getUTCFullYear() / step) * step;
