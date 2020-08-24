@@ -611,6 +611,9 @@
 			if (format === undefined)
 				format = this.o.format;
 
+      if (!this.dates.length)
+        this.dates.push(UTCToday());
+
 			var lang = this.o.language;
 			return $.map(this.dates, function(d){
 				return DPGlobal.formatDate(d, format, lang);
@@ -774,9 +777,19 @@
 				delete this.element.data().date;
 			}
 
-			dates = $.map(dates, $.proxy(function(date){
-				return DPGlobal.parseDate(date, this.o.format, this.o.language, this.o.assumeNearbyYear);
-			}, this));
+      var startDate = DPGlobal.parseDate(this.o.startDate, this.o.format, this.o.language, this.o.assumeNearbyYear);
+      var endDate = DPGlobal.parseDate(this.o.endDate, this.o.format, this.o.language, this.o.assumeNearbyYear);
+      dates = $.map(dates, $.proxy(function(date){
+        var enteredDate = DPGlobal.parseDate(date, this.o.format, this.o.language, this.o.assumeNearbyYear);
+
+        if (enteredDate >= endDate) {
+          return endDate;
+        } else if (enteredDate <= startDate) {
+          return startDate;
+        }
+
+        return enteredDate;
+      }, this));
 			dates = $.grep(dates, $.proxy(function(date){
 				return (
 					!this.dateWithinRange(date) ||
