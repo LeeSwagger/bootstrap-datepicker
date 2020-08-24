@@ -777,8 +777,12 @@
 				delete this.element.data().date;
 			}
 
-      var startDate = DPGlobal.parseDate(this.o.startDate, this.o.format, this.o.language, this.o.assumeNearbyYear);
-      var endDate = DPGlobal.parseDate(this.o.endDate, this.o.format, this.o.language, this.o.assumeNearbyYear);
+      var startDate = String(this.o.startDate) !== String(defaults.startDate) ? (
+        DPGlobal.parseDate(this.o.startDate, this.o.format, this.o.language, this.o.assumeNearbyYear)
+      ) : '';
+      var endDate = String(this.o.endDate) !== String(defaults.endDate) ? (
+        DPGlobal.parseDate(this.o.endDate, this.o.format, this.o.language, this.o.assumeNearbyYear)
+      ) : '';
       dates = $.map(dates, $.proxy(function(date){
         var enteredDate = DPGlobal.parseDate(date, this.o.format, this.o.language, this.o.assumeNearbyYear);
 
