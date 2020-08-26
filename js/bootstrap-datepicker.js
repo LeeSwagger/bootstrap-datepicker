@@ -371,6 +371,26 @@
                 events.focus = $.proxy(this.show, this);
             }
 
+            if (this.o.togglerSelector) {
+              $(document).on('click', this.o.togglerSelector, (event) => {
+                event.preventDefault();
+
+                if (this.picker.is(':visible')) {
+                  this.hide();
+
+                  return;
+                }
+
+                if (!$(event.target).parent().has(this.element).length) {
+                  return;
+                }
+
+                if (!this.picker.is(':visible')) {
+                  this.show();
+                }
+              });
+            }
+
             if (this.isInput) { // single input
                 this._events = [
                     [this.element, events]
@@ -434,13 +454,13 @@
 				[$(document), {
 					'mousedown touchstart': $.proxy(function(e){
 						// Clicked outside the datepicker, hide it
-						if (!(
-							this.element.is(e.target) ||
-							this.element.find(e.target).length ||
-							this.picker.is(e.target) ||
-							this.picker.find(e.target).length ||
-							this.isInline
-						)){
+            if (!(
+              this.element.find(e.target).length ||
+              this.picker.is(e.target) ||
+              this.picker.find(e.target).length ||
+              this.isInline ||
+              $(e.target).hasClass(this.o.togglerSelector.substring(1))
+            )){
 							this.hide();
 						}
 					}, this)
@@ -486,6 +506,8 @@
 		},
 
 		show: function(){
+      if (this.inputField.is(':focus'))
+        return;
 			if (this.inputField.is(':disabled') || (this.inputField.prop('readonly') && this.o.enableOnReadonly === false))
 				return;
 			if (!this.isInline)
@@ -1750,6 +1772,7 @@
 		startView: 0,
 		todayBtn: false,
 		todayHighlight: false,
+    togglerSelector: '',
 		updateViewDate: true,
 		weekStart: 0,
 		disableTouchKeyboard: false,
