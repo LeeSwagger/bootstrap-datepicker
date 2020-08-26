@@ -418,14 +418,14 @@
 				// Component: listen for blur on element descendants
 				[this.element, '*', {
 					blur: $.proxy(function(e){
-					  $(e.target).val() ? this.setValue() : '';
+					  $(e.target).val() && this.setValue();
 						this._focused_from = e.target;
 					}, this)
 				}],
 				// Input: listen for blur on element
 				[this.element, {
 					blur: $.proxy(function(e){
-					  $(e.target).val() ? this.setValue() : '';
+					  $(e.target).val() && this.setValue();
 						this._focused_from = e.target;
 					}, this)
 				}]
