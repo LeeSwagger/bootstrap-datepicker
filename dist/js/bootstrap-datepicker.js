@@ -376,7 +376,7 @@
               if (!self.picker.is(':visible')) {
                 self.show();
               }
-            }
+            };
 
             if (this.o.togglerSelector) {
               $(document).on('click', this.o.togglerSelector, togglerHandler.bind(this));
@@ -409,14 +409,20 @@
 				// Component: listen for blur on element descendants
 				[this.element, '*', {
 					blur: $.proxy(function(e){
-					  $(e.target).val() && this.setValue();
+					  if ($(e.target).val()) {
+					    this.setValue();
+            }
+
 						this._focused_from = e.target;
 					}, this)
 				}],
 				// Input: listen for blur on element
 				[this.element, {
 					blur: $.proxy(function(e){
-					  $(e.target).val() && this.setValue();
+					  if ($(e.target).val()) {
+					    this.setValue();
+            }
+
 						this._focused_from = e.target;
 					}, this)
 				}]
