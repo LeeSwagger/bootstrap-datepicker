@@ -371,24 +371,28 @@
                 events.focus = $.proxy(this.show, this);
             }
 
+            var self = this;
+
+            var togglerHandler = function(event) {
+              event.preventDefault();
+
+              if (self.picker.is(':visible')) {
+                this.hide();
+
+                return;
+              }
+
+              if (!$(event.target).parent().has(self.element).length) {
+                return;
+              }
+
+              if (!self.picker.is(':visible')) {
+                self.show();
+              }
+            }
+
             if (this.o.togglerSelector) {
-              $(document).on('click', this.o.togglerSelector, (event) => {
-                event.preventDefault();
-
-                if (this.picker.is(':visible')) {
-                  this.hide();
-
-                  return;
-                }
-
-                if (!$(event.target).parent().has(this.element).length) {
-                  return;
-                }
-
-                if (!this.picker.is(':visible')) {
-                  this.show();
-                }
-              });
+              $(document).on('click', this.o.togglerSelector, togglerHandler.bind(this));
             }
 
             if (this.isInput) { // single input
