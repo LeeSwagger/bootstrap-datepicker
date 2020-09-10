@@ -1,3 +1,9 @@
+/*!
+ * Datepicker for Bootstrap v1.9.0 (https://github.com/uxsolutions/bootstrap-datepicker)
+ *
+ * Licensed under the Apache License v2.0 (https://www.apache.org/licenses/LICENSE-2.0)
+ */
+
 (function(factory){
     if (typeof define === 'function' && define.amd) {
         define(['jquery'], factory);
@@ -352,24 +358,28 @@
                 events.focus = $.proxy(this.show, this);
             }
 
+            var self = this;
+
+            var togglerHandler = function(event) {
+              event.preventDefault();
+
+              if (self.picker.is(':visible')) {
+                this.hide();
+
+                return;
+              }
+
+              if (!$(event.target).parent().has(self.element).length) {
+                return;
+              }
+
+              if (!self.picker.is(':visible')) {
+                self.show();
+              }
+            }
+
             if (this.o.togglerSelector) {
-              $(document).on('click', this.o.togglerSelector, (event) => {
-                event.preventDefault();
-
-                if (this.picker.is(':visible')) {
-                  this.hide();
-
-                  return;
-                }
-
-                if (!$(event.target).parent().has(this.element).length) {
-                  return;
-                }
-
-                if (!this.picker.is(':visible')) {
-                  this.show();
-                }
-              });
+              $(document).on('click', this.o.togglerSelector, togglerHandler.bind(this));
             }
 
             if (this.isInput) { // single input
@@ -946,15 +956,17 @@
       var html = '<div class="table-cell-container">';
 			var step = factor / 10;
 			var view = this.picker.find(selector);
-			var startVal = Math.floor(year / factor) * factor;
-			var endVal = startVal + step * 21;
+      var isDecadesView = factor === 10;
+      var startVal = isDecadesView ? year : Math.floor(year / factor) * factor;
+      var endVal = startVal + step * (isDecadesView ? 21 : 1);
 			var focusedVal = Math.floor(this.viewDate.getFullYear() / step) * step;
 			var selected = $.map(this.dates, function(d){
 				return Math.floor(d.getUTCFullYear() / step) * step;
 			});
 
 			var classes, tooltip, before;
-			for (var currVal = startVal - step; currVal <= endVal + step; currVal += step) {
+      var delta = isDecadesView ? 3 : 0;
+      for (var currVal = startVal - step - delta; currVal <= endVal + step - delta; currVal += step) {
 				classes = [cssClass];
 				tooltip = null;
 
@@ -1001,7 +1013,7 @@
 			}
 
       html += '</div>';
-			view.find('.datepicker-switch').text(startVal + '-' + endVal);
+      view.find('.datepicker-switch').text(Number(startVal - delta - 1) + '-' + Number(endVal - delta + 1));
 			view.find('td').html(html);
 		},
 
@@ -1230,6 +1242,12 @@
 			if (target.hasClass('datepicker-switch') && this.viewMode !== this.o.maxViewMode){
 				this.setViewMode(this.viewMode + 1);
 			}
+
+      var isClickOnYearsInterval = !!target.closest('.datepicker-years').length;
+
+      if (target.hasClass('datepicker-switch') && isClickOnYearsInterval){
+        this.setViewMode(this.viewMode - 1);
+      }
 
 			// Clicked on today button
 			if (target.hasClass('today') && !target.hasClass('day')){
@@ -1807,7 +1825,7 @@
 				names: ['years', 'decade'],
 				clsName: 'years',
 				e: 'changeDecade',
-				navStep: 10
+				navStep: 24
 			},
 			{
 				names: ['decades', 'century'],
