@@ -965,15 +965,17 @@
       var html = '<div class="table-cell-container">';
 			var step = factor / 10;
 			var view = this.picker.find(selector);
-			var startVal = Math.floor(year / factor) * factor;
-			var endVal = startVal + step * 21;
+      var isDecadesView = factor === 10;
+      var startVal = isDecadesView ? year : Math.floor(year / factor) * factor;
+      var endVal = startVal + step * (isDecadesView ? 21 : 1);
 			var focusedVal = Math.floor(this.viewDate.getFullYear() / step) * step;
 			var selected = $.map(this.dates, function(d){
 				return Math.floor(d.getUTCFullYear() / step) * step;
 			});
 
 			var classes, tooltip, before;
-			for (var currVal = startVal - step; currVal <= endVal + step; currVal += step) {
+      var delta = isDecadesView ? 3 : 0;
+      for (var currVal = startVal - step - delta; currVal <= endVal + step - delta; currVal += step) {
 				classes = [cssClass];
 				tooltip = null;
 
@@ -1020,7 +1022,7 @@
 			}
 
       html += '</div>';
-			view.find('.datepicker-switch').text(startVal + '-' + endVal);
+      view.find('.datepicker-switch').text(Number(startVal - delta - 1) + '-' + Number(endVal - delta + 1));
 			view.find('td').html(html);
 		},
 
@@ -1826,7 +1828,7 @@
 				names: ['years', 'decade'],
 				clsName: 'years',
 				e: 'changeDecade',
-				navStep: 10
+				navStep: 24
 			},
 			{
 				names: ['decades', 'century'],
