@@ -1252,6 +1252,12 @@
 				this.setViewMode(this.viewMode + 1);
 			}
 
+      var isClickOnYearsInterval = !!target.closest('.datepicker-years').length;
+
+      if (target.hasClass('datepicker-switch') && isClickOnYearsInterval){
+        this.setViewMode(this.viewMode - 1);
+      }
+
 			// Clicked on today button
 			if (target.hasClass('today') && !target.hasClass('day')){
 				this.setViewMode(0);
