@@ -1213,6 +1213,7 @@
 				prevIsDisabled,
 				nextIsDisabled,
 				factor = 1;
+      var isDecadesView = this.viewMode === this.o.maxViewMode;
 			switch (this.viewMode){
 				case 4:
 					factor *= 10;
@@ -1225,7 +1226,7 @@
 					/* falls through */
 				case 1:
 					prevIsDisabled = Math.floor(year / factor) * factor <= startYear;
-					nextIsDisabled = Math.floor(year / factor) * factor + factor > endYear;
+					nextIsDisabled = Math.floor(year / factor) * factor + (isDecadesView ? 19 : factor) > endYear;
 					break;
 				case 0:
 					prevIsDisabled = year <= startYear && month <= startMonth;
